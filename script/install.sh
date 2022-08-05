@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# create symlinks for all dotfiles in directory
 create_symlinks() {
     # Get the directory in which this script lives.
     script_dir=$(dirname "$(readlink -f "$0")")
@@ -17,3 +18,11 @@ create_symlinks() {
 }
 
 create_symlinks
+
+# Set ZSH as default shell (e.g. for SSH)
+if ! grep -q "root.*/bin/zsh" /etc/passwd
+then
+  chsh -s /bin/zsh root
+fi
+
+script/install-vscode-extensions
