@@ -1,0 +1,9 @@
+[user]
+	name = Alec Breton
+	email = acbreton@github.com
+	username = acbreton
+[color]
+	ui = auto
+[alias]
+	co = checkout
+	st = status
