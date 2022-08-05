@@ -19,10 +19,6 @@ create_symlinks() {
 
 create_symlinks
 
-# Set ZSH as default shell (e.g. for SSH)
-if ! grep -q "root.*/bin/zsh" /etc/passwd
-then
-  chsh -s /bin/zsh root
-fi
+sudo chsh -s "$(which zsh)" "$(whoami)"
 
 script/install-vscode-extensions
