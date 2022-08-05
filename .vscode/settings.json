@@ -1,0 +1,4 @@
+{
+	// Set default terminal shell to zsh
+	"terminal.integrated.defaultProfile.linux": "zsh",
+}
