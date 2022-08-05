@@ -1,9 +1,10 @@
+# Load VCS info
 autoload -Uz vcs_info
-precmd_vcs_info() { vcs_info }
-precmd_functions+=( precmd_vcs_info )
-setopt prompt_subst
-zstyle ':vcs_info:git:*' formats '%b'
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '%F{green}(%b)%f '
 
-# Configure color prompt
-autoload -U colors && colors
-PS1="%{$fg[red]%}%n%{$reset_color%}@ %{$fg[yellow]%}%~ %{$reset_color%}% ${vcs_info_msg_0_}%# "
+# Prompt Opt
+setopt PROMPT_SUBST
+
+# Configure prompt
+PS1='%B%S%F{cyan}%n%f%s%b %~ ${vcs_info_msg_0_}$ '
