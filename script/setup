@@ -19,6 +19,6 @@ create_symlinks() {
 
 create_symlinks
 
-chsh -s "$(which zsh)" "$(whoami)"
+sudo chsh -s "$(which zsh)" "$(whoami)"
 
 $script_dir/install-vscode-extensions
