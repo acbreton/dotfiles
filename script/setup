@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# create symlinks for all dotfiles in directory
+# Create symlinks for all dotfiles in directory
 create_symlinks() {
     # Get the directory in which this script lives.
     script_dir=$(dirname "$(readlink -f "$0")")
@@ -19,6 +19,8 @@ create_symlinks() {
 
 create_symlinks
 
+# Set ZSH as default prompt
 sudo chsh -s "$(which zsh)" "$(whoami)"
 
+# Install VSCode extensions in list
 $script_dir/install-vscode-extensions
