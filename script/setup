@@ -23,4 +23,4 @@ create_symlinks
 sudo chsh -s "$(which zsh)" "$(whoami)"
 
 # Install VSCode extensions in list
-$script_dir/install-vscode-extensions
+$(dirname "$0")/install-vscode-extensions
