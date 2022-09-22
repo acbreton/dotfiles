@@ -19,7 +19,7 @@ zsh_prompt() {
       user="${GITHUB_USER}"
     else
       user="%n"
-    elif
+    fi
 
     userpath='%B%F{green}@${user}%f%b'
     dir='%F{yellow}%~%f' 
