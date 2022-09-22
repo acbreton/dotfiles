@@ -15,9 +15,15 @@ zsh_prompt() {
     # Prompt opt
     setopt PROMPT_SUBST
 
-    user='%B%F{green}@%n%f%b'
+    if [[ -z "${GITHUB_USER}" ]]; then
+      user="${GITHUB_USER}"
+    else
+      user="%n"
+    elif
+
+    userpath='%B%F{green}@${user}%f%b'
     dir='%F{yellow}%~%f' 
-    PS1='${user} ➜ ${dir} ${vcs_info_msg_0_}$ '
+    PS1='${userpath} ➜ ${dir} ${vcs_info_msg_0_}$ '
 }
 zsh_prompt
 
