@@ -23,23 +23,22 @@ zsh_prompt() {
 }
 zsh_prompt
 
-if [ $MACOS ] 
-then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [ $LINUX ]
-then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"	
-fi
-
-eval "$(rbenv init -)"
-
 if [ $CODESPACES ]
 then
-    export GITHUB_PATH=/workspaces/github
-    export LAUNCH_PATH=/workspaces/actions/launch
-    export SKYRISE_PATH=/workspaces/actions/actions-dotnet/src
-    alias start-actions='/workspaces/github/script/actions/start-actions'
-    alias stop-actions='/workspaces/github/script/actions/stop-actions'
-    alias skyrise='cd /workspaces/actions/actions-dotnet/src && ./init.sh'
-    PATH=$PATH:/workspaces/actions/actions-dotnet/src/script/autopath
+	if [ $MACOS ] 
+	then
+	    eval "$(/opt/homebrew/bin/brew shellenv)"
+	elif [ $LINUX ]
+	then
+	    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"	
+	fi
+
+	eval "$(rbenv init -)"
+	export GITHUB_PATH=/workspaces/github
+	export LAUNCH_PATH=/workspaces/actions/launch
+	export SKYRISE_PATH=/workspaces/actions/actions-dotnet/src
+	alias start-actions='/workspaces/github/script/actions/start-actions'
+	alias stop-actions='/workspaces/github/script/actions/stop-actions'
+	alias skyrise='cd /workspaces/actions/actions-dotnet/src && ./init.sh'
+	PATH=$PATH:/workspaces/actions/actions-dotnet/src/script/autopath
 fi
