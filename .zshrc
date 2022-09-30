@@ -19,7 +19,7 @@ zsh_prompt() {
  
     userpath="%B%F{green}@${user}%f%b"
     dir="%F{yellow}%~%f"
-    PS1="${userpath} ➜ ${dir} ${vcs_info_msg_0_}$ "
+    PS1="${userpath} ${dir} ${vcs_info_msg_0_}$ "
 }
 zsh_prompt
 
