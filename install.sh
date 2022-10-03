@@ -17,5 +17,3 @@ create_symlinks
 # Set ZSH as default prompt
 sudo chsh -s "$(which zsh)" "$(whoami)"
 
-# Install VSCode extensions in list
-$(pwd)/install-vscode-extensions
