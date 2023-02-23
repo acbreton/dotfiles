@@ -1,9 +1,0 @@
-fuser -k 9999/tcp
-fuser -k 8149/tcp
-fuser -k 8150/tcp
-fuser -k 8152/tcp
-fuser -k 8153/tcp
-fuser -k 3000/tcp
-fuser -k 8151/tcp
-fuser -k 4327/tcp
-fuser -k 9092/tcp
