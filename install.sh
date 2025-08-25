@@ -3,9 +3,11 @@ set -e
 
 create_dotfile_symlinks() {
     echo "Linking dotfiles to home directory..."
-    files=$(find -maxdepth 1 -type f -name ".*")
 
-    for file in $files; do
+    for file in .??*; do
+        [ -e "$file" ] || continue  # Skip if it doesn't exist
+        [ "$file" = ".git" ] && continue  # Skip .git directory if present
+
         name=$(basename "$file")
         echo "Creating symlink: ~/$name -> $(pwd)/$name"
         ln -sfv "$(pwd)/$name" "$HOME/$name"
