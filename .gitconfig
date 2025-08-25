@@ -7,3 +7,7 @@
 [alias]
 	co = checkout
 	st = status
+[init]
+	defaultBranch = main
+[core]
+	editor = vim
