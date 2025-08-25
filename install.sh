@@ -18,15 +18,6 @@ setup_nvim_config() {
     echo "Linking Neovim config..."
     mkdir -p "$HOME/.config"
     ln -sfv "$(pwd)/nvim" "$HOME/.config/nvim"
-
-    # Install vim-plug if not present
-    if [ ! -f "$HOME/.local/share/nvim/site/autoload/plug.vim" ]; then
-        echo "Installing vim-plug for Neovim..."
-        curl -fLo "$HOME/.local/share/nvim/site/autoload/plug.vim" --create-dirs \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    else
-        echo "vim-plug already installed."
-    fi
 }
 
 set_zsh_default() {
@@ -70,4 +61,3 @@ create_dotfile_symlinks
 setup_nvim_config
 set_zsh_default
 
-echo "✅ Done! Open Neovim and run :PlugInstall"

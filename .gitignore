@@ -1,1 +1,15 @@
-nvim/plugged/
+# Ignore Neovim plugins and runtime files
+.local/share/nvim/site/pack/
+.local/share/nvim/lazy/
+
+# Ignore swap, undo, backup files
+*.swp
+*.swo
+*.swn
+*.undo
+*.bak
+
+# Ignore compiled Python files (if any)
+__pycache__/
+*.pyc
+
