@@ -1,13 +1,13 @@
 return require("lazy").setup({
   { "tpope/vim-sensible" },
   {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd([[colorscheme tokyonight]])
-      vim.cmd([[set background=dark]])
-    end,
+      "NLKNguyen/papercolor-theme",
+      priority = 1000,
+      lazy = false,
+      config = function()
+        vim.opt.termguicolors = true
+        vim.cmd("colorscheme PaperColor")
+      end
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -66,6 +66,19 @@ return require("lazy").setup({
   {
     "jose-elias-alvarez/null-ls.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "lua", "python", "typescript", "json" }, -- languages you want
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+      })
+    end,
   },
 })
 
