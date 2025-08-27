@@ -63,8 +63,12 @@ return require("lazy").setup({
   },
   { "L3MON4D3/LuaSnip" },
   {
-    "nvimtools/none-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "stevearc/conform.nvim",
+    opts = {},
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = {},
   },
   {
     "nvim-treesitter/nvim-treesitter",
