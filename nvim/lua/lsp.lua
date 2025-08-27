@@ -1,5 +1,5 @@
 local lspconfig = require("lspconfig")
-local null_ls = require("null-ls") -- migrated from null-ls
+local null_ls = require("null-ls")
 
 -- Setup other language servers
 lspconfig.ts_ls.setup({})
