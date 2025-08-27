@@ -1,6 +1,13 @@
 return require("lazy").setup({
   { "tpope/vim-sensible" },
-  { "NLKNguyen/papercolor-theme", lazy = false, priority = 1000, config = function() vim.cmd("colorscheme PaperColor") end },
+  {
+    "NLKNguyen/papercolor-theme",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme PaperColor")
+    end
+  },
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
