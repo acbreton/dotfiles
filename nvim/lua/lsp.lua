@@ -1,7 +1,7 @@
 local lspconfig = require("lspconfig")
 
 -- Setup other language servers
-lspconfig.tsserver.setup({})
+lspconfig.ts_ls.setup({})
 lspconfig.pyright.setup({})
 
 -- Setup Lua language server with Neovim-specific config

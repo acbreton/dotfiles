@@ -68,7 +68,19 @@ return require("lazy").setup({
   },
   {
     "mfussenegger/nvim-lint",
-    opts = {},
+    config = function()
+      require("lint").linters_by_ft = {
+        python = { "flake8" },
+        javascript = { "eslint" },
+        typescript = { "eslint" },
+        -- add more filetypes/linters as needed
+      }
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter",
