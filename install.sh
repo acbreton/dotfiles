@@ -39,13 +39,25 @@ install_deps() {
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             }
             brew install neovim zsh curl
+            # Formatters and linters (Homebrew, pip, npm)
+            echo "Installing formatters and linters for Neovim (conform.nvim & nvim-lint)..."
+            brew install stylua
+            brew install python3
+            brew install node
+            npm install -g prettier eslint
             ;;
         linux*)
             if grep -qi microsoft /proc/version; then
                 echo "WSL detected — assuming Ubuntu-like system"
-                sudo apt update && sudo apt install -y neovim zsh curl
+                sudo apt update && sudo apt install -y neovim zsh curl python3 nodejs npm
+                echo "Installing formatters and linters for Neovim (conform.nvim & nvim-lint)..."
+                npm install -g prettier eslint
+                echo "Please install stylua manually if needed: https://github.com/JohnnyMorganz/StyLua#installation"
             else
-                echo "Linux detected — install your dependencies manually (Arch: pacman -S neovim zsh curl)"
+                echo "Linux detected — install your dependencies manually (Arch: pacman -S neovim zsh curl python3 nodejs npm)"
+                echo "Then run:"
+                echo "  npm install -g prettier eslint"
+                echo "  Install stylua manually: https://github.com/JohnnyMorganz/StyLua#installation"
             fi
             ;;
         *)
@@ -55,9 +67,18 @@ install_deps() {
     esac
 }
 
-# Run everything
+print_post_install_info() {
+    echo
+    echo "Neovim config is ready!"
+    echo "If you see errors about missing formatters/linters, install them manually:"
+    echo "  npm install -g prettier eslint"
+    echo "  stylua: https://github.com/JohnnyMorganz/StyLua#installation"
+    echo
+    echo "Run :checkhealth in Neovim for diagnostics."
+}
+
 install_deps
 create_dotfile_symlinks
 setup_nvim_config
 set_zsh_default
-
+print_post_install_info
