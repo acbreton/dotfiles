@@ -1,5 +1,5 @@
 local lspconfig = require("lspconfig")
-local null_ls = require("null-ls")
+local none_ls = require("none-ls") -- migrated from null-ls
 
 -- Setup other language servers
 lspconfig.ts_ls.setup({})
@@ -25,13 +25,12 @@ lspconfig.lua_ls.setup({
   },
 })
 
--- Setup null-ls
-null_ls.setup({
+-- Setup none-ls (formerly null-ls)
+none_ls.setup({
   sources = {
-    null_ls.builtins.diagnostics.eslint,
-    null_ls.builtins.formatting.prettier,
-    null_ls.builtins.diagnostics.flake8,
-    null_ls.builtins.formatting.black,
+    none_ls.builtins.diagnostics.eslint,
+    none_ls.builtins.formatting.prettier,
+    none_ls.builtins.diagnostics.flake8,
+    none_ls.builtins.formatting.black,
   },
 })
-
