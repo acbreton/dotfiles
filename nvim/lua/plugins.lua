@@ -1,6 +1,6 @@
 return require("lazy").setup({
   { "tpope/vim-sensible" },
-  { "morhetz/gruvbox", priority = 1000, lazy = false, config = function() vim.cmd("colorscheme gruvbox") end },
+  { "NLKNguyen/papercolor-theme", lazy = false, priority = 1000, config = function() vim.cmd("colorscheme PaperColor") end },
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -56,7 +56,7 @@ return require("lazy").setup({
   },
   { "L3MON4D3/LuaSnip" },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
   },
   {
@@ -64,7 +64,8 @@ return require("lazy").setup({
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup({
-        ensure_installed = { "lua", "python", "typescript", "json" }, -- languages you want
+        ensure_installed = { "lua", "python", "typescript", "json" },
+        auto_install = true,
         highlight = {
           enable = true,
           additional_vim_regex_highlighting = false,
@@ -73,4 +74,3 @@ return require("lazy").setup({
     end,
   },
 })
-
