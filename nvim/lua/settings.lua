@@ -4,6 +4,7 @@ vim.opt.relativenumber = true
 vim.opt.cursorline = true
 vim.opt.wrap = false
 vim.cmd("syntax on")
+-- vim.opt.termguicolors = true  -- <-- COMMENT THIS OUT for 256-color
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -20,4 +21,3 @@ vim.opt.mouse = "a"
 
 -- Set leader key
 vim.g.mapleader = " "
-
