@@ -111,4 +111,3 @@ create_dotfile_symlinks
 setup_nvim_config
 set_zsh_default
 print_post_install_info
-rint_post_install_info
