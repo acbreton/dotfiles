@@ -1,3 +1,4 @@
+
 #!/bin/bash
 set -e
 
@@ -5,8 +6,8 @@ create_dotfile_symlinks() {
     echo "Linking dotfiles to home directory..."
 
     for file in .??*; do
-        [ -e "$file" ] || continue  # Skip if it doesn't exist
-        [ "$file" = ".git" ] && continue  # Skip .git directory if present
+        [ -e "$file" ] || continue
+        [ "$file" = ".git" ] && continue
 
         name=$(basename "$file")
         echo "Creating symlink: ~/$name -> $(pwd)/$name"
@@ -30,6 +31,31 @@ set_zsh_default() {
     chsh -s "$(which zsh)"
 }
 
+install_pipx_and_python_tools() {
+    # Install pipx if missing
+    if ! command -v pipx >/dev/null 2>&1; then
+        echo "Installing pipx..."
+
+        if command -v brew >/dev/null 2>&1; then
+            brew install pipx
+        elif command -v pacman >/dev/null 2>&1; then
+            sudo pacman -S --needed python-pipx
+        elif command -v apt >/dev/null 2>&1; then
+            sudo apt update
+            sudo apt install -y python3-pipx
+        else
+            echo "Please install pipx manually: https://pipxproject.github.io/install/"
+            exit 1
+        fi
+    fi
+
+    export PATH="$HOME/.local/bin:$PATH"
+
+    echo "Installing pylint and black with pipx..."
+    pipx install --force pylint
+    pipx install --force black
+}
+
 install_deps() {
     case "$OSTYPE" in
         darwin*)
@@ -38,26 +64,28 @@ install_deps() {
                 echo "Homebrew not found. Installing..."
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             }
-            brew install neovim zsh curl
-            # Formatters and linters (Homebrew, pip, npm)
-            echo "Installing formatters and linters for Neovim (conform.nvim & nvim-lint)..."
+            brew install neovim zsh curl python3 node
             brew install stylua
-            brew install python3
-            brew install node
+
+            echo "Installing formatters and linters..."
             npm install -g prettier eslint
+            install_pipx_and_python_tools
             ;;
         linux*)
             if grep -qi microsoft /proc/version; then
                 echo "WSL detected — assuming Ubuntu-like system"
-                sudo apt update && sudo apt install -y neovim zsh curl python3 nodejs npm
-                echo "Installing formatters and linters for Neovim (conform.nvim & nvim-lint)..."
+                sudo apt update
+                sudo apt install -y neovim zsh curl python3 python3-pip python3-pipx nodejs npm
+                echo "Installing formatters and linters..."
                 npm install -g prettier eslint
+                install_pipx_and_python_tools
                 echo "Please install stylua manually if needed: https://github.com/JohnnyMorganz/StyLua#installation"
             else
-                echo "Linux detected — install your dependencies manually (Arch: pacman -S neovim zsh curl python3 nodejs npm)"
-                echo "Then run:"
-                echo "  npm install -g prettier eslint"
-                echo "  Install stylua manually: https://github.com/JohnnyMorganz/StyLua#installation"
+                echo "Linux detected — installing via pacman..."
+                sudo pacman -S --needed neovim zsh curl python python-pipx nodejs npm stylua
+                echo "Installing formatters and linters..."
+                npm install -g prettier eslint
+                install_pipx_and_python_tools
             fi
             ;;
         *)
@@ -69,9 +97,10 @@ install_deps() {
 
 print_post_install_info() {
     echo
-    echo "Neovim config is ready!"
+    echo "Setup complete!"
     echo "If you see errors about missing formatters/linters, install them manually:"
     echo "  npm install -g prettier eslint"
+    echo "  pipx install pylint black"
     echo "  stylua: https://github.com/JohnnyMorganz/StyLua#installation"
     echo
     echo "Run :checkhealth in Neovim for diagnostics."
@@ -82,3 +111,4 @@ create_dotfile_symlinks
 setup_nvim_config
 set_zsh_default
 print_post_install_info
+rint_post_install_info
