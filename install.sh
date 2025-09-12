@@ -41,7 +41,9 @@ install_pipx_and_python_tools() {
             sudo pacman -S --needed python-pipx
         elif command -v apt >/dev/null 2>&1; then
             sudo apt update
-            sudo apt install -y python3-pipx
+            sudo apt install -y python3-pip
+            python3 -m pip install --user pipx
+            python3 -m pipx ensurepath
         else
             echo "Please install pipx manually: https://pipxproject.github.io/install/"
             exit 1
