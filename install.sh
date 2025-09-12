@@ -31,6 +31,11 @@ set_zsh_default() {
 }
 
 install_pipx_and_python_tools() {
+    # Set pipx to use user directories
+    export PIPX_HOME="$HOME/.local/pipx"
+    export PIPX_BIN_DIR="$HOME/.local/bin"
+    export PATH="$PIPX_BIN_DIR:$PATH"
+
     # Install pipx if missing
     if ! command -v pipx >/dev/null 2>&1; then
         echo "Installing pipx..."
@@ -49,8 +54,6 @@ install_pipx_and_python_tools() {
             exit 1
         fi
     fi
-
-    export PATH="$HOME/.local/bin:$PATH"
 
     echo "Installing pylint and black with pipx..."
     pipx install --force pylint
