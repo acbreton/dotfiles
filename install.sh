@@ -22,7 +22,7 @@ setup_nvim_config() {
 
 set_zsh_default() {
     if ! grep -q "$(which zsh)" /etc/shells 2>/dev/null; then
-        echo "Adding $(which zsh) to /etc/shells"
+        echo "Adding $(which zsh)" to /etc/shells
         echo "$(which zsh)" | sudo tee -a /etc/shells
     fi
 
@@ -96,7 +96,7 @@ install_deps() {
         ubuntu)
             echo "Ubuntu/Debian detected — installing via apt..."
             sudo apt update
-            sudo apt install -y neovim zsh curl python3 python3-pip python3-pipx nodejs npm
+            sudo apt install -y neovim zsh curl python3 python3-pip nodejs npm
             echo "Installing formatters and linters..."
             npm install -g prettier eslint
             install_pipx_and_python_tools
@@ -111,7 +111,6 @@ install_deps() {
             ;;
         linux)
             echo "Generic Linux detected — please update install logic if needed."
-            # You can choose to default to apt or pacman, or print a message.
             ;;
         *)
             echo "Unsupported OS: $os_type"
