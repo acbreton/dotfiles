@@ -1,4 +1,3 @@
-
 #!/bin/bash
 set -e
 
@@ -56,40 +55,64 @@ install_pipx_and_python_tools() {
     pipx install --force black
 }
 
+get_os_type() {
+    if [ "$(uname)" = "Darwin" ]; then
+        echo "darwin"
+    elif [ -f /etc/os-release ]; then
+        . /etc/os-release
+        case "$ID" in
+            ubuntu|debian)
+                echo "ubuntu"
+                ;;
+            arch)
+                echo "arch"
+                ;;
+            *)
+                echo "linux"
+                ;;
+        esac
+    else
+        echo "unknown"
+    fi
+}
+
 install_deps() {
-    case "$OSTYPE" in
-        darwin*)
+    os_type=$(get_os_type)
+    case "$os_type" in
+        darwin)
             echo "Installing dependencies via Homebrew..."
             command -v brew >/dev/null || {
                 echo "Homebrew not found. Installing..."
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             }
-            brew install neovim zsh curl python3 node
-            brew install stylua
+            brew install neovim zsh curl python3 node stylua
 
             echo "Installing formatters and linters..."
             npm install -g prettier eslint
             install_pipx_and_python_tools
             ;;
-        linux*)
-            if grep -qi microsoft /proc/version; then
-                echo "WSL detected — assuming Ubuntu-like system"
-                sudo apt update
-                sudo apt install -y neovim zsh curl python3 python3-pip python3-pipx nodejs npm
-                echo "Installing formatters and linters..."
-                npm install -g prettier eslint
-                install_pipx_and_python_tools
-                echo "Please install stylua manually if needed: https://github.com/JohnnyMorganz/StyLua#installation"
-            else
-                echo "Linux detected — installing via pacman..."
-                sudo pacman -S --needed neovim zsh curl python python-pipx nodejs npm stylua
-                echo "Installing formatters and linters..."
-                npm install -g prettier eslint
-                install_pipx_and_python_tools
-            fi
+        ubuntu)
+            echo "Ubuntu/Debian detected — installing via apt..."
+            sudo apt update
+            sudo apt install -y neovim zsh curl python3 python3-pip python3-pipx nodejs npm
+            echo "Installing formatters and linters..."
+            npm install -g prettier eslint
+            install_pipx_and_python_tools
+            echo "Please install stylua manually if needed: https://github.com/JohnnyMorganz/StyLua#installation"
+            ;;
+        arch)
+            echo "Arch Linux detected — installing via pacman..."
+            sudo pacman -S --needed neovim zsh curl python python-pipx nodejs npm stylua
+            echo "Installing formatters and linters..."
+            npm install -g prettier eslint
+            install_pipx_and_python_tools
+            ;;
+        linux)
+            echo "Generic Linux detected — please update install logic if needed."
+            # You can choose to default to apt or pacman, or print a message.
             ;;
         *)
-            echo "Unsupported OS: $OSTYPE"
+            echo "Unsupported OS: $os_type"
             exit 1
             ;;
     esac
