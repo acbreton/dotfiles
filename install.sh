@@ -21,13 +21,23 @@ setup_nvim_config() {
 }
 
 set_zsh_default() {
-    if ! grep -q "$(which zsh)" /etc/shells 2>/dev/null; then
-        echo "Adding $(which zsh)" to /etc/shells
-        echo "$(which zsh)" | sudo tee -a /etc/shells
+    ZSH_PATH=$(which zsh)
+    echo "Detected zsh at: $ZSH_PATH"
+
+    if [ -n "$CODESPACES" ]; then
+        echo "⚠️  Running inside GitHub Codespaces — skipping chsh and /etc/shells edits."
+        echo "Adding 'exec zsh' to ~/.bashrc to launch zsh automatically."
+        grep -q 'exec zsh' ~/.bashrc 2>/dev/null || echo 'exec zsh' >> ~/.bashrc
+        return
+    fi
+
+    if ! grep -q "$ZSH_PATH" /etc/shells 2>/dev/null; then
+        echo "Adding $ZSH_PATH to /etc/shells"
+        echo "$ZSH_PATH" | sudo tee -a /etc/shells
     fi
 
     echo "Setting Zsh as default shell..."
-    chsh -s "$(which zsh)"
+    chsh -s "$ZSH_PATH" || echo "⚠️ chsh failed — please set zsh manually"
 }
 
 install_pipx_and_python_tools() {
@@ -36,7 +46,6 @@ install_pipx_and_python_tools() {
     export PIPX_BIN_DIR="$HOME/.local/bin"
     export PATH="$PIPX_BIN_DIR:$PATH"
 
-    # Install pipx if missing
     if ! command -v pipx >/dev/null 2>&1; then
         echo "Installing pipx..."
 
@@ -91,7 +100,6 @@ install_deps() {
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             }
             brew install neovim zsh curl python3 node stylua
-
             echo "Installing formatters and linters..."
             npm install -g prettier eslint
             install_pipx_and_python_tools
@@ -124,15 +132,23 @@ install_deps() {
 
 print_post_install_info() {
     echo
-    echo "Setup complete!"
+    echo "✅ Setup complete!"
+    echo
     echo "If you see errors about missing formatters/linters, install them manually:"
     echo "  npm install -g prettier eslint"
     echo "  pipx install pylint black"
     echo "  stylua: https://github.com/JohnnyMorganz/StyLua#installation"
     echo
     echo "Run :checkhealth in Neovim for diagnostics."
+    echo
+
+    if [ -n "$CODESPACES" ]; then
+        echo "🛠 You are in GitHub Codespaces — zsh will launch via .bashrc."
+        echo "To check you're using zsh, run: echo \$0"
+    fi
 }
 
+# Run everything
 install_deps
 create_dotfile_symlinks
 setup_nvim_config
