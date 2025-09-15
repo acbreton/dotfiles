@@ -110,7 +110,7 @@ install_deps() {
             sudo apt install -y neovim zsh curl python3 python3-pip nodejs npm
             echo "Installing formatters and linters..."
             npm install -g prettier eslint
-            if [ -n "$CODESPACES" ]; then
+            if [ -z "$CODESPACES" ]; then
                 install_pipx_and_python_tools
             fi
             echo "Please install stylua manually if needed: https://github.com/JohnnyMorganz/StyLua#installation"
