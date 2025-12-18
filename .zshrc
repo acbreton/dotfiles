@@ -23,6 +23,17 @@ zsh_prompt() {
 }
 zsh_prompt
 
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+
+if [ $MACOS ]
+then
+    if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
+        alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+    fi
+fi
+
 if [ $CODESPACES ]
 then
 	if [ $MACOS ] 
