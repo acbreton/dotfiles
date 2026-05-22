@@ -54,6 +54,23 @@ return require("lazy").setup({
         "neovim/nvim-lspconfig",
     },
     {
+        "williamboman/mason.nvim",
+        build = ":MasonUpdate",
+        config = function()
+            require("mason").setup()
+        end,
+    },
+    {
+        "williamboman/mason-lspconfig.nvim",
+        dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
+        config = function()
+            require("mason-lspconfig").setup({
+                ensure_installed = { "ts_ls", "pyright", "lua_ls" },
+                automatic_installation = true,
+            })
+        end,
+    },
+    {
         "hrsh7th/nvim-cmp",
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
@@ -68,20 +85,7 @@ return require("lazy").setup({
         "stevearc/conform.nvim",
         opts = {},
     },
-    {
-        "mfussenegger/nvim-lint",
-        config = function()
-            require("lint").linters_by_ft = {
-                javascript = { "eslint" },
-                typescript = { "eslint" },
-            }
-            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-                callback = function()
-                    require("lint").try_lint()
-                end,
-            })
-        end,
-    },
+    { "mfussenegger/nvim-lint" },
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",

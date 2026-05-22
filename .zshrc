@@ -15,7 +15,7 @@ zsh_prompt() {
     # Prompt opt
     setopt PROMPT_SUBST
 
-    user="${GITHUB_USER:-$USERNAME}"
+    user="${GITHUB_USER:-${USERNAME:-$USER}}"
  
     userpath="%B%F{green}@${user}%f%b"
     dir='%F{yellow}%~%f'

@@ -17,10 +17,16 @@ create_dotfile_symlinks() {
 setup_nvim_config() {
     echo "Linking Neovim config..."
     mkdir -p "$HOME/.config"
-    ln -sfv "$(pwd)/nvim" "$HOME/.config/nvim"
+    ln -sfn "$(pwd)/nvim" "$HOME/.config/nvim"
 }
 
 set_zsh_default() {
+    if uname -s | grep -q "_NT-"; then
+        echo "⚠️  Windows Git Bash detected — skipping shell change."
+        echo "Zsh is not available on Windows Git Bash; .bashrc will be used."
+        return
+    fi
+
     ZSH_PATH=$(which zsh)
     echo "Detected zsh at: $ZSH_PATH"
 
@@ -70,7 +76,9 @@ install_pipx_and_python_tools() {
 }
 
 get_os_type() {
-    if [ "$(uname)" = "Darwin" ]; then
+    if uname -s | grep -q "_NT-"; then
+        echo "windows"
+    elif [ "$(uname)" = "Darwin" ]; then
         echo "darwin"
     elif [ -f /etc/os-release ]; then
         . /etc/os-release
@@ -120,6 +128,21 @@ install_deps() {
             npm install -g prettier eslint
             install_pipx_and_python_tools
             ;;
+        windows)
+            echo "Windows Git Bash detected — limited install support."
+            echo "Please ensure the following are installed manually:"
+            echo "  - Neovim: https://github.com/neovim/neovim/wiki/Installing-Neovim#windows"
+            echo "  - Node.js: https://nodejs.org/"
+            echo "  - Python: https://www.python.org/downloads/windows/"
+            if command -v npm >/dev/null 2>&1; then
+                echo "Installing formatters and linters via npm..."
+                npm install -g prettier eslint
+            fi
+            if command -v pip >/dev/null 2>&1 || command -v pip3 >/dev/null 2>&1; then
+                echo "Installing Python tools..."
+                pip install --user pylint black 2>/dev/null || pip3 install --user pylint black
+            fi
+            ;;
         linux)
             echo "Generic Linux detected — please update install logic if needed."
             ;;
@@ -150,7 +173,19 @@ print_post_install_info() {
 
 if [ -z "$CODESPACES" ]; then
     install_deps
-    setup_nvim_config
+
+    if ! uname -s | grep -q "_NT-"; then
+        setup_nvim_config
+    else
+        # On Windows, nvim config goes to ~/AppData/Local/nvim
+        NVIM_WIN_DIR="$APPDATA/../Local/nvim"
+        if [ -n "$LOCALAPPDATA" ]; then
+            NVIM_WIN_DIR="$LOCALAPPDATA/nvim"
+        fi
+        echo "Linking Neovim config to $NVIM_WIN_DIR..."
+        mkdir -p "$(dirname "$NVIM_WIN_DIR")"
+        ln -sfn "$(pwd)/nvim" "$NVIM_WIN_DIR"
+    fi
 
     # Use SSH for GitHub URLs on local machines
     git config --global url."git@github.com:".insteadOf "https://github.com/"
