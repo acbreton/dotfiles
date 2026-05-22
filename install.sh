@@ -151,6 +151,9 @@ print_post_install_info() {
 if [ -z "$CODESPACES" ]; then
     install_deps
     setup_nvim_config
+
+    # Use SSH for GitHub URLs on local machines
+    git config --global url."git@github.com:".insteadOf "https://github.com/"
 fi
 
 create_dotfile_symlinks
